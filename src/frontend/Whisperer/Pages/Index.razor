@@ -1,0 +1,45 @@
+﻿@page "/"
+
+<section>
+    <div class="row">
+        <div class="col">
+            Lorem ipsum
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <TabContainer>
+                <Tab>
+                    <TabContent>
+                        <i class="fas fa-pen-fancy"></i> Editor
+                        <div class="pull-right">
+                            <button type="button" title="Scroll to bottom" class="button accent outline is-medium" @onclick="ScrollToBottomAsync">
+                                <i class="fas fa-list-ol"></i>
+                            </button>
+                            <button type="button" title="Clear screen" class="button error outline is-medium" @onclick="ClearTerminalAsync">
+                                <i class="fas fa-eraser"></i>
+                            </button>
+                        </div>
+                    </TabContent>
+                    <ChildContent>
+                        @if (!IsInitialized)
+                        {
+                            <div class="row">
+                                <div class="col">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <WaveLoader IsAlternativeColor="true" />
+                                </div>
+                            </div>
+                        }
+
+                        <div id="container" style="height: 75vh;"></div>
+                    </ChildContent>
+                </Tab>
+            </TabContainer>
+        </div>
+    </div>
+</section>

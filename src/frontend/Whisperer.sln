@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whisperer", "Whisperer\Whisperer.csproj", "{B8D4EFF7-91B6-4E28-95B4-4B6A0A55E7C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{F043DFD0-93B6-40DB-86DB-FA4262DC44F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{46E71547-5D59-4AB1-AE38-A847B43F0331}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F4103478-F5DF-4E54-AA5A-2D2ED711E20C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whisperer.Application", "Whisperer.Application\Whisperer.Application.csproj", "{01E81B4D-A957-4856-8E3C-681910324924}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{0617CE81-5BBD-4261-B9AF-3A6AE9CEE97D}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\LICENSE.md = ..\..\LICENSE.md
+		..\..\README.md = ..\..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{54F89B43-429A-4DD2-BF77-6BDAB3471FA4}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.gitignore = ..\..\.gitignore
+		clean.ps1 = clean.ps1
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8D4EFF7-91B6-4E28-95B4-4B6A0A55E7C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8D4EFF7-91B6-4E28-95B4-4B6A0A55E7C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8D4EFF7-91B6-4E28-95B4-4B6A0A55E7C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8D4EFF7-91B6-4E28-95B4-4B6A0A55E7C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01E81B4D-A957-4856-8E3C-681910324924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E81B4D-A957-4856-8E3C-681910324924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E81B4D-A957-4856-8E3C-681910324924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E81B4D-A957-4856-8E3C-681910324924}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B8D4EFF7-91B6-4E28-95B4-4B6A0A55E7C5} = {46E71547-5D59-4AB1-AE38-A847B43F0331}
+		{46E71547-5D59-4AB1-AE38-A847B43F0331} = {F043DFD0-93B6-40DB-86DB-FA4262DC44F8}
+		{F4103478-F5DF-4E54-AA5A-2D2ED711E20C} = {F043DFD0-93B6-40DB-86DB-FA4262DC44F8}
+		{01E81B4D-A957-4856-8E3C-681910324924} = {F4103478-F5DF-4E54-AA5A-2D2ED711E20C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF963C46-268A-4FA1-92F0-95392223295B}
+	EndGlobalSection
+EndGlobal
