@@ -12,9 +12,9 @@
             Runtime = runtime;
         }
 
-        public async Task InitializeAsync(string elementId, string initialCode, string language, string theme, bool readOnly)
+        public async Task InitializeAsync(string elementId, string initialCode, string language, string theme, bool readOnly, bool wordWrap)
         {
-            await Runtime.InvokeVoidAsync("monacoInterop.initialize", elementId, initialCode, language, theme, readOnly);
+            await Runtime.InvokeVoidAsync("monacoInterop.initialize", elementId, initialCode, language, theme, readOnly, wordWrap);
         }
 
         public async Task<string> GetTextAsync(string elementId)
