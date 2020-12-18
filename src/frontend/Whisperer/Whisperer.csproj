@@ -29,6 +29,9 @@
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="1.0.0-dev-00019" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,10 +45,6 @@
   <ItemGroup>
     <None Include=".\wwwroot\appsettings.json" Link="appsettings.json" />
     <None Include=".\wwwroot\appsettings.Development.json" Link="appsettings.Development.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Whisperer.Application\Whisperer.Application.csproj" />
   </ItemGroup>
 
 </Project>

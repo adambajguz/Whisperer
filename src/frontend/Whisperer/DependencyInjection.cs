@@ -8,8 +8,8 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Serilog;
-    using Whisperer.Application.Extensions;
     using Whisperer.Configurations;
+    using Whisperer.Extensions;
     using Whisperer.Services;
 
     public static class DependencyInjection
@@ -23,12 +23,15 @@
                                                   .SetMinimumLevel(environment.IsDevelopment() ? LogLevel.Trace : LogLevel.Information));
 
             services.AddConfiguration<ApplicationConfiguration>(configuration)
+                    .AddConfiguration<SuggestionsConfiguration>(configuration)
                     .AddConfiguration<HeaderConfiguration>(configuration)
                     .AddConfiguration<FooterConfiguration>(configuration);
 
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(environment.BaseAddress) })
                     .AddScoped<IMarkdownService, MarkdownService>()
                     .AddScoped<MonacoEditorService>();
+
+            services.AddTransient<TimerService>();
 
             return services;
         }

@@ -22,9 +22,14 @@
             return await Runtime.InvokeAsync<string>("monacoInterop.getText", elementId);
         }
 
-        public async Task SetTextAsync(string elementId, string code)
+        public async Task SetTextAsync(string elementId, string text)
         {
-            await Runtime.InvokeVoidAsync("monacoInterop.setText", elementId, code);
+            await Runtime.InvokeVoidAsync("monacoInterop.setText", elementId, text);
+        }
+
+        public async Task TypeTextAsync(string elementId, string text)
+        {
+            await Runtime.InvokeVoidAsync("monacoInterop.typeText", elementId, text);
         }
 
         public async Task ShowLineNumbers(string elementId)

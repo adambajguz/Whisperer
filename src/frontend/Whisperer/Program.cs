@@ -5,7 +5,6 @@ namespace Whisperer
     using Serilog;
     using Serilog.Events;
     using Serilog.Exceptions;
-    using Whisperer.Application;
 
     public static class Program
     {
@@ -19,8 +18,7 @@ namespace Whisperer
 
             AddSerilog(hostEnvironment);
 
-            builder.Services.ConfigureServices(configuration, hostEnvironment)
-                            .ConfigureApplicationServices(configuration);
+            builder.Services.ConfigureServices(configuration, hostEnvironment);
 
             await builder.Build().RunAsync();
         }

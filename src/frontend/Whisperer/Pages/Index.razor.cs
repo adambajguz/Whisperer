@@ -2,6 +2,9 @@
 {
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
+    using Microsoft.Extensions.Options;
+    using Whisperer.Configurations;
+    using Whisperer.Models;
     using Whisperer.Services;
 
     public partial class Index
@@ -22,6 +25,18 @@ To take a trivial example, which of us ever undertakes laborious physical exerci
         private bool IsInitialized { get; set; }
 
         [Inject] private MonacoEditorService MonacoEditor { get; set; } = default!;
+
+        private string[]? Completions { get; set; } = new[] { "test", "plain-text", "green" };
+
+        private SuggestionPreferences Preferences { get; set; } = new();
+
+        [Inject] private IOptions<SuggestionsConfiguration> _SuggestionsConfiguration { get; init; } = default!;
+        private SuggestionsConfiguration SuggestionsConfiguration => _SuggestionsConfiguration.Value;
+
+        protected override void OnParametersSet()
+        {
+            Preferences = new() { Count = SuggestionsConfiguration.DefaultCount };
+        }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -45,6 +60,23 @@ To take a trivial example, which of us ever undertakes laborious physical exerci
         private async Task ScrollToBottomAsync()
         {
             await MonacoEditor.ToggleLineNumbersVisibility("container");
+        }
+
+        private async Task TypeText(string str)
+        {
+            await MonacoEditor.TypeTextAsync("container", str);
+        }
+
+        private void RefreshCompletions(SuggestionPreferences preferences)
+        {
+            if (preferences.Count <= 0)
+                preferences.Count = 5;
+
+            string apiUri = SuggestionsConfiguration.ApiUri ?? string.Empty;
+
+            //TODO: api communication
+
+            Completions = new[] { "one", "two", "three" };
         }
     }
 }

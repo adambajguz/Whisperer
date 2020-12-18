@@ -30,6 +30,10 @@ monacoInterop.showLineNumbers = function showLineNumbers(elementId) {
     });
 }
 
+monacoInterop.typeText = function typeText(elementId, str) {
+    monacoInterop.editors[elementId].trigger('keyboard', 'type', { text: str });
+}
+
 monacoInterop.hideLineNumbers = function hideLineNumbers(elementId) {
     monacoInterop.editors[elementId].updateOptions({
         lineNumbers: "off"

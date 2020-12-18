@@ -1,4 +1,4 @@
-﻿namespace Whisperer.Application.Services
+﻿namespace Whisperer.Services
 {
     using System;
     using System.Timers;

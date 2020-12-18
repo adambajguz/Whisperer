@@ -1,4 +1,4 @@
-﻿namespace Whisperer.Application.Extensions
+﻿namespace Whisperer.Extensions
 {
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;

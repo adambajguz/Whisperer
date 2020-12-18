@@ -3,7 +3,38 @@
 <section>
     <div class="row">
         <div class="col">
-            Lorem ipsum
+            <h2>Suggestions:</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3 col-2-md col-1-lg">
+            <EditForm Model="Preferences">
+                <InputSelect id="select" @bind-Value="Preferences.Count">
+                    @foreach (var i in Enumerable.Range(SuggestionsConfiguration.MinCount, SuggestionsConfiguration.MaxCount))
+                    {
+                        <option>@i</option>
+                    }
+                </InputSelect>
+
+            </EditForm>
+        </div>
+        <div class="col">
+            <button type="button" title="Scroll to bottom" class="button accent outline " @onclick="() => RefreshCompletions(Preferences)">
+                <i class="fas fa-sync"></i> Refresh
+            </button>
+            @if (Completions is not null)
+            {
+                foreach (var completion in Completions)
+                {
+                    <button type="button" title="Scroll to bottom" class="button light" @onclick="() => TypeText(completion)">
+                        @completion
+                    </button>
+                }
+            }
+            else
+            {
+                <i>---</i>
+            }
         </div>
     </div>
 
