@@ -52,12 +52,12 @@ To take a trivial example, which of us ever undertakes laborious physical exerci
             }
         }
 
-        private async Task ClearTerminalAsync()
+        private async Task ClearAsync()
         {
             await MonacoEditor.SetTextAsync("container", string.Empty);
         }
 
-        private async Task ScrollToBottomAsync()
+        private async Task ToggleLineNumbersAsync()
         {
             await MonacoEditor.ToggleLineNumbersVisibility("container");
         }
