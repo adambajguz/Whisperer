@@ -57,7 +57,7 @@
 
         private async Task TypeText(string str)
         {
-            await MonacoEditor.TypeTextAsync("container", str);
+            await MonacoEditor.TypeTextAsync("container", " " + str);
         }
 
         private async void RefreshCompletions(SuggestionPreferences preferences)
