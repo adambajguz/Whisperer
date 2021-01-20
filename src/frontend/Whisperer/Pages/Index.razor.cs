@@ -1,6 +1,7 @@
 ﻿namespace Whisperer.Pages
 {
     using System;
+    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Json;
     using System.Threading.Tasks;
@@ -68,7 +69,9 @@
             string apiUri = SuggestionsConfiguration.ApiUri ?? string.Empty;
             string text = await MonacoEditor.GetTextAsync("container");
 
-            var response = await Client.GetAsync($"{apiUri}/predict?sentence={text}&count={preferences.Count}");
+            string tmp = string.Join(' ', text.Split(' ').TakeLast(20));
+
+            var response = await Client.GetAsync($"{apiUri}/predict?sentence={tmp}&count={preferences.Count}");
             if (response.IsSuccessStatusCode)
             {
                 var model = await response.Content.ReadFromJsonAsync<SuggestionsModel>();
