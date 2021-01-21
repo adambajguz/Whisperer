@@ -9,99 +9,94 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.callbacks import ReduceLROnPlateau
 from tensorflow.keras.callbacks import TensorBoard
 
+import nltk
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+
 import pickle
 import numpy as np
 import os
 import string
 
-file = open("8119-0.txt", "r", encoding = "utf8")
+file = open("metamorphosis_clean.txt", "r", encoding = "utf8")
 lines = []
 
 for line in file:
-    if line and line.strip():
+    if line and line.strip() and not line.startswith("CHAPTER"):
         lines.append(line)
 
 # Merge every word to one string
 
+print("file_loaded")
+
 data = ""
+data = ' '.join(lines)
+print(data[:360])
 
-for i in lines:
-    data = ' '.join(lines)
+print("file merged!")
+data = data.replace('\n', '').replace('\r', '').replace('\ufeff', '').replace(',','').replace('‘','').replace('’','').replace(',','')
+print(data[:360])
+print("file cleared!")
 
-# map punctuation to space, remove new line marks
-data = data.replace('\n', '').replace('\r', '').replace('\ufeff', '')
-translator = str.maketrans(string.punctuation, ' '*len(string.punctuation)) 
-new_data = data.translate(translator)
+tokens = word_tokenize(data)
+print(tokens[:10])
 
-# Remove duplicates
+train_len = 4
+text_sequences = []
 
-z = []
+for i in range(train_len,len(tokens)):
+    s = tokens[i-train_len:i]
+    text_sequences.append(s)
 
-for i in data.split():
-    if i not in z:
-        z.append(i)
-        
-data = ' '.join(z)
+sequences = {}
+count = 1
 
+for i in range(len(tokens)):
+    if tokens[i] not in sequences:
+        sequences[tokens[i]]=count
+        count += 1
+
+print(sequences)
+print("text seq:")
+print(text_sequences[:10])
 tokenizer = Tokenizer()
-tokenizer.fit_on_texts([data])
+tokenizer.fit_on_texts(text_sequences)
+sequences = tokenizer.texts_to_sequences(text_sequences)
 
-pickle.dump(tokenizer, open('tokenizer1.pkl', 'wb'))
+voc_size = len(tokenizer.word_counts) + 1
+n_sequences = np.empty([len(sequences),train_len], dtype='int32')
 
-sequence_data = tokenizer.texts_to_sequences([data])[0]
+for i in range(len(sequences)):
+    n_sequences[i] = sequences[i]
 
+train_inputs = n_sequences[:,:-1]
+train_targets = n_sequences[:,-1]
+train_targets = to_categorical(train_targets,num_classes=voc_size)
+seq_len = train_inputs.shape[1]
 
-print("\n\nFINAL PROGRAM: \n")
-print(sequence_data[:10])
-
-vocab_size = len(tokenizer.word_index) + 1
-print(vocab_size)
-
-
-
-sequences = []
-
-for i in range(1, len(sequence_data)):
-    words = sequence_data[i-1:i+1]
-    sequences.append(words)
-    
-print("The Length of sequences are: ", len(sequences))
-sequences = np.array(sequences)
+print("seq")
 print(sequences[:10])
+print("seq_len:",seq_len)
 
-X = []
-y = []
-
-for i in sequences:
-    X.append(i[0])
-    y.append(i[1])
-    
-X = np.array(X)
-y = np.array(y)
-
-print("The Data is: ", X[:5])
-print("The responses are: ", y[:5])
-
-y = to_categorical(y, num_classes=vocab_size)
-print(y[:5])
+pickle.dump(tokenizer, open('tokenizer_seq_of_three.pkl', 'wb'))
 
 model = Sequential()
-model.add(Embedding(vocab_size, 10, input_length=1))
-model.add(LSTM(1000, return_sequences=True))
-model.add(LSTM(1000))
-model.add(Dense(1000, activation="relu"))
-model.add(Dense(vocab_size, activation="softmax"))
+model.add(Embedding(voc_size, seq_len, input_length=seq_len))
+model.add(LSTM(100, return_sequences=True))
+model.add(LSTM(100))
+model.add(Dense(100, activation="relu"))
+model.add(Dense(voc_size, activation="softmax"))
 
 print(model.summary())
 
-checkpoint = ModelCheckpoint("nextword1.h5", monitor='loss', verbose=1,
+checkpoint = ModelCheckpoint("nextword_seq_of_three.h5", monitor='loss', verbose=1,
     save_best_only=True, mode='auto')
 
 reduce = ReduceLROnPlateau(monitor='loss', factor=0.2, patience=3, min_lr=0.0001, verbose = 1)
 
-logdir='logsnextword1'
+logdir='logsnextword_wep_meta'
 tensorboard_Visualization = TensorBoard(log_dir=logdir)
 
 
-model.compile(loss="categorical_crossentropy", optimizer=Adam(lr=0.001))
-model.fit(X, y, epochs=150, batch_size=64, callbacks=[checkpoint, reduce, tensorboard_Visualization])
+model.compile(loss="categorical_crossentropy", optimizer=Adam(lr=0.001), metrics=['accuracy'])
+model.fit(train_inputs, train_targets, epochs=500, callbacks=[checkpoint, reduce, tensorboard_Visualization])

@@ -5,6 +5,7 @@
     using System.Net.Http;
     using System.Net.Http.Json;
     using System.Threading.Tasks;
+    using System.Web;
     using Microsoft.AspNetCore.Components;
     using Microsoft.Extensions.Options;
     using Whisperer.Configurations;
@@ -58,7 +59,13 @@
 
         private async Task TypeText(string str)
         {
-            await MonacoEditor.TypeTextAsync("container", " " + str);
+            if(str.Contains('\'') || str.Contains('.') || str.Contains(';') || str.Contains(':'))
+            {
+                await MonacoEditor.TypeTextAsync("container", str);
+            }
+            else
+                await MonacoEditor.TypeTextAsync("container", " " + str);
+            RefreshCompletions(Preferences);
         }
 
         private async void RefreshCompletions(SuggestionPreferences preferences)
@@ -70,14 +77,19 @@
             string text = await MonacoEditor.GetTextAsync("container");
 
             string tmp = string.Join(' ', text.Split(' ').TakeLast(20));
-
-            var response = await Client.GetAsync($"{apiUri}/predict?sentence={tmp}&count={preferences.Count}");
-            if (response.IsSuccessStatusCode)
+            using (var client = new HttpClient())
             {
-                var model = await response.Content.ReadFromJsonAsync<SuggestionsModel>();
+                var request = new HttpRequestMessage(HttpMethod.Get, $"{apiUri}/predict?sentence={HttpUtility.UrlEncodeUnicode(tmp)}&count={preferences.Count}");
 
-                Completions = model?.PredictedWords ?? Array.Empty<string>();
-            }
+                var response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    var model = await response.Content.ReadFromJsonAsync<SuggestionsModel>();
+
+                    Completions = model?.PredictedWords ?? Array.Empty<string>();
+                    StateHasChanged();
+                }
+            }           
         }
     }
 }

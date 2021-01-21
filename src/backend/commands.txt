@@ -1,1 +1,0 @@
-uvicorn API:app --host <localhost or ip of your internal card in wsl example: 172.18.38.30> --reload
